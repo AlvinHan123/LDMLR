@@ -17,11 +17,21 @@ Overview of the proposed framework, LDMLR. The figure describes the training of 
 
 Install dependencies:
 ```sh
+git clone https://github.com/AlvinHan123/LDMLR
+cd LDMLR
+
+conda create -n LDMLR python=3.9
+conda activate LDMLR
+
+# install pytorch
+pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
+
+# install dependencies
 pip install -r requirements.txt
 ```
 
 ## Usage
-## Dataset
+### Dataset
 
 ### Training
  ```
