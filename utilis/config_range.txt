@@ -1,0 +1,59 @@
+{
+  "dataset":
+    {
+      "name":               ["CIFAR100", "CIFAR10", "ImageNet","iNaturalist2018"],
+      "class_num":          [100, 10, 1000, 8142],
+      "imb_factor":         [0.1, 0.05, 0.01, 0.005, None],
+      "path":               [None,"str"],
+      "batch_size":         "int",
+      "sampler":            [None, "Weighted"],
+      "num_workers":        "int",
+      "pin_memory":         "bool",
+    },
+  "model":
+    {
+      "name":               ["resnet32", "resnet10", "resnet50", "resnext50", "resnet152",
+                             "cRT", "MiSLAS", "LWS"],
+      "output_dim":         "int",
+      "ensemble_info":
+        {
+          "name":           ["none", "tail"],
+          "mask":           ["bool","bool","bool","bool"],
+          "ensemble_num":   ["int",None]
+        },
+      "gpu":                ["int",None]
+    },
+  "optimizer":
+    {
+      "name":               ["SGD"],
+      "lr":                 "float",
+      "momentum":           "float",
+      "wd" :                "float",
+      "nesterov":           "bool",
+
+    },
+  "lr_scheduler":
+    {
+      "name":               ["step", "warmup_step", "cos"],
+      "milestones":         [None, "list"],
+    },
+  "loss":
+    {
+      "name":               ["CE", "Focal", "LDAM"],
+    },
+  "train_info":
+    {
+      "mode":               ["Normal", "DRW"],
+      "epoch":              "int",
+      "data_aug":
+        {
+            "name":         ["mixup", "none", 'cutmix', 'unimix'],
+            "alpha":        "float",
+        },
+      "print_log":          "int",
+    },
+  "checkpoint":
+    {
+      "path":               ["str", None],
+    }
+}

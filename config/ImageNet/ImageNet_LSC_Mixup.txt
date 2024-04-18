@@ -1,0 +1,68 @@
+{
+  "dataset":
+    {
+      "name":               "ImageNet",
+      "class_num":          1000,
+      "imb_factor":         None,
+      "path":               None,
+      "batch_size":         128,
+      "sampler":            None,
+      "num_workers":        16,
+      "pin_memory":         True,
+    },
+  "model":
+    {
+      "name":               "resnet50",
+      "output_dim":         1000,
+      "fc_norm":            False,
+      "ensemble_info":
+        {
+          "name":           "none",
+          "drop_rate":      0.5,
+          "mask_rate":      2.,
+          "mask":           [False,False,False,False],
+          "ensemble_num":   None
+        },
+      "gpu":                None
+    },
+  "optimizer":
+    {
+      "name":               "SGD",
+      "lr":                 0.1,
+      "momentum":           0.9,
+      "wd":                 2e-4,
+      "nesterov":           True,
+
+    },
+  "lr_scheduler":
+    {
+      "name":               "warmup_step",
+      "milestones":         [60,80],
+      "warmup_epoch":       5,
+    },
+  "loss":
+    {
+      "name":               "CE",
+      "focal_gamma":        1.0,
+      "scale":              1.,
+      "lade_lambda":        0.1
+    },
+  "train_info":
+    {
+      "mode":               "Normal",
+      "epoch":              100,
+      "data_aug":
+        {
+            "name":         "mixup",
+            "r":            1,
+            "alpha":        0.2,
+            "tau":          -0.1,
+        },
+      "print_log":          20,
+    },
+  "checkpoint":
+    {
+      "path":               None,
+    }
+}
+

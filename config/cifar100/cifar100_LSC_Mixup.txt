@@ -1,0 +1,65 @@
+{
+  "dataset":
+    {
+      "name":               "CIFAR100",
+      "class_num":          100,
+      "imb_factor":         0.01,
+      "path":               None,
+      "batch_size":         64,
+      "sampler":            None,
+      "num_workers":        4,
+      "pin_memory":         True,
+    },
+  "model":
+    {
+      "name":               "resnet32",
+      "output_dim":         100,
+      "fc_norm":            False,
+      "ensemble_info":
+        {
+          "name":           "none",
+          "drop_rate":      0.5,
+          "mask_rate":      2.,
+          "mask":           [False,False,False,False],
+          "ensemble_num":   None
+        },
+      "gpu":                None
+    },
+  "optimizer":
+    {
+      "name":               "SGD",
+      "lr":                 0.001,
+      "momentum":           0.9,
+      "wd":                 5e-4,
+      "nesterov":           True,
+    },
+  "lr_scheduler":
+    {
+      "name":               "step",
+      "milestones":         [100,150],
+    },
+  "loss":
+    {
+      "name":               "CE",
+      "focal_gamma":        1.0,
+      "scale":              1.,
+      "lade_lambda":        0.1,
+    },
+  "train_info":
+    {
+      "mode":               "Normal",
+      "epoch":              1000,
+      "data_aug":
+        {
+            "name":         "mixup",
+            "r":            1,
+            "alpha":        0.5,
+            "tau":          -0.1,
+        },
+      "print_log":          10,
+    },
+  "checkpoint":
+    {
+      "path":               None,
+    }
+}
