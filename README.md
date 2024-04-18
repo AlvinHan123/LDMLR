@@ -31,6 +31,30 @@ pip install -r requirements.txt
 
 ## Usage
 ### Dataset
+Arrange files as following:
+```plain
+data
+    imagenet
+        imagenet_lt_test.txt
+        imagenet_lt_train.txt
+        imagenet_lt_val.txt
+        ImageNet_val_preprocess.py
+        imagenet_lt_test.txt
+        train
+            n01440764
+            ....
+        val
+            ILSVRC2012_val_0000000001.JPEG
+            ...
+    CIFAR10_LT01
+        airplane
+            ariplane1.png
+            ...
+    CIFAR10_test
+        airplane
+            ariplane1.png
+            ...
+```
 
 ### Training
  ```
