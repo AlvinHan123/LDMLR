@@ -13,9 +13,8 @@ Overview of the proposed framework, LDMLR. The figure describes the training of 
 ## Installation
 - You must have an NVIDIA graphics card with at least 12GB (if ImageNet) VRAM and have [CUDA](https://developer.nvidia.com/cuda-downloads) installed.
 - Install `Python >= 3.8` `PyTorch >= 1.12`.
-- (Optional, Recommended) Create a virtual environment:
+- (Optional, Recommended) Create a virtual environment as follows:
 
-Install dependencies:
 ```sh
 git clone https://github.com/AlvinHan123/LDMLR
 cd LDMLR
