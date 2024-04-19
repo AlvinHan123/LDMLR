@@ -1,7 +1,6 @@
 # LDMLR
 
 The Pytorch implementation for the following paper (accpeted by L3D-IVU CVPR24): 
-
 **"Latent-based Diffusion Model for Long-tailed Recognition"**
 
 ## Abstract
