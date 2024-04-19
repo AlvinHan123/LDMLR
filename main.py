@@ -17,8 +17,6 @@ from datetime import datetime
 import torch
 import logging
 
-# python main.py --datapath /home/pengxiao/4T_data/pengxiao_space/LT-Baselines-vae/LSC/DATASET_ImageNet_LT/CIFAR10_LT001_v5 --model_fixed /4T/pengxiao_space/WCDAS/WCDAS_code/pretrained_models/CIFAR10_LT001_v5_fixed.checkpoint
-
 parser = argparse.ArgumentParser(description='Long-Tailed Diffusion Model training   ----Author: Pengxiao Han')
 parser.add_argument('--datapath', default=None, type=str, help='dataset path')
 parser.add_argument('--config', default="./config/cifar10/cifar10_LSC_Mixup.txt", help='path to config file')
@@ -36,6 +34,7 @@ parser.add_argument('--learning_rate_fc', default=0.001, type=float, help='CNN f
 
 parser.add_argument('--is_diffusion_pretrained', default = None, help='pre-trained diffusion model path. Training from scratch if None')
 parser.add_argument('--generation_mmf', default=None, type=str, help='CNN fully connected layer batch size')
+
 
 def main():
     args = parser.parse_args()
