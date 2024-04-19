@@ -1,6 +1,7 @@
 # LDMLR
 
-The Pytorch implementation for the paper titled Latent-based.Diffusion Model for Long-tailed Recognition [Arvix](https://arxiv.org/abs/2404.04517) (accpeted by L3D-IVU CVPR24)
+The Pytorch implementation for the following paper (accpeted by L3D-IVU CVPR24):
+**"Latent-based Diffusion Model for Long-tailed Recognition"**
 
 ## Abstract
 Long-tailed imbalance distribution is a common issue in practical computer vision applications. Previous works proposed methods to address this problem, which can be categorized into several classes: re-sampling, re-weighting, transfer learning, and feature augmentation. In recent years, diffusion models have shown an impressive generation ability in many sub-problems of deep computer vision. However, its powerful generation has not been explored in long-tailed problems. We propose a new approach, the Latent-based Diffusion Model for Long-tailed Recognition (LDMLR), as a feature augmentation method to tackle the issue. First, we encode the imbalanced dataset into features using the baseline model. Then, we train a Denoising Diffusion Implicit Model (DDIM) using these encoded features to generate pseudo-features. Finally, we train the classifier using the encoded and pseudo-features from the previous two steps. The model's accuracy shows an improvement on the CIFAR-LT and ImageNet-LT datasets by using the proposed method.
