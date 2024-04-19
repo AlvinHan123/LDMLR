@@ -58,7 +58,7 @@ data
 
 ### Training
  ```
- python main.py --datapath your_cifar_datapath --model_fixed your_pretrained_resnet32_on_long_tailed_cifar
+ python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed
  ```
 
 ## Results
