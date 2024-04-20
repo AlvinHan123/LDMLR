@@ -1,10 +1,12 @@
 # See https://github.com/zhmiao/OpenLongTailRecognition-OLTR/blob/master/data/dataloader.py
-from torch.utils.data import Dataset, DataLoader, ConcatDataset
 import os
-from PIL import Image
 import logging
-from dataloader.sampler import get_sampler
+from PIL import Image
+
 from torchvision import transforms
+from torch.utils.data import Dataset, DataLoader, ConcatDataset
+
+from dataloader.sampler import get_sampler
 
 data_transforms = {
     'train': transforms.Compose([
@@ -31,7 +33,6 @@ data_transforms = {
 
 # Dataset
 class LT_Dataset(Dataset):
-
     def __init__(self, root, txt, transform=None):
         self.img_path = []
         self.targets = []
