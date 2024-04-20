@@ -1,19 +1,19 @@
 import glob
-
-from torchvision import transforms
 import os
-import torchvision.datasets as dset
-from torch.utils.data import DataLoader,Dataset
-import numpy as np
-import numpy as np
-from torch.utils.data import WeightedRandomSampler, RandomSampler
-# from data_loader.sampler import *
 
+import numpy as np
+import torchvision.datasets as dset
 from torchvision import transforms
+from torchvision import transforms
+from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import WeightedRandomSampler, RandomSampler
+
 from PIL import Image
+
 
 def default_loader(path):
     return Image.open(path).convert("RGB")
+
 
 # customized Dataset function
 class MyDataset(Dataset):
@@ -36,6 +36,7 @@ class MyDataset(Dataset):
 
     def __len__(self):
         return len(self.imgs)
+
 
 class FeatureDataset(Dataset):
     def __init__(self, features, labels):
@@ -64,6 +65,7 @@ class FeatureDataset(Dataset):
         label = self.labels[index]
 
         return feature, label, index
+
 
 def data_loader_custm(dataset, datapath, data_transforms, imb_factor):
     # the generated img with imb factor 0.1
@@ -137,6 +139,7 @@ def data_loader_custm(dataset, datapath, data_transforms, imb_factor):
 
     return train_dataset, val_dataset, test_dataset, dset_info
 
+
 def load_data(dataset_name, datapath, data_transforms, imb_factor):
     train_dataset, val_dataset, test_dataset, dset_info = data_loader_custm(dataset_name,
                                                                       datapath,
@@ -149,6 +152,7 @@ def load_data(dataset_name, datapath, data_transforms, imb_factor):
     test_set = DataLoader(test_dataset, batch_size=64,shuffle = False)
 
     return train_set, val_set, test_set, dset_info
+
 
 def Custom_dataset(args):
     if args.dataset == "CIFAR10":
@@ -166,6 +170,7 @@ def Custom_dataset(args):
                 "pin_memory": True}
     return dataset
 
+
 def Custom_dataset_test(args):
     if args.dataset == "CIFAR10":
         class_num = 10
@@ -179,6 +184,7 @@ def Custom_dataset_test(args):
                 "number_worker": 0,
                 "pin_memory": True}
     return dataset
+
 
 def data_loader_wrapper_cust(cust_dataset):
     # Dataloader for CIFAR10/100, data info loaded in --datapath + '/' + dataset
