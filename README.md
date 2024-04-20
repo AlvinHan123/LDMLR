@@ -76,8 +76,6 @@ The encoder is ResNet-32. Classification accuracies in percentages are provided.
 | Label shift+LDMLR | 89.70 (↑0.24) | 82.77 (↑1.89) | 62.67 (↑0.86)    | 49.76 (↑1.18)       |
 | WCDAS+LDMLR | **92.58 (↑0.10)** | **86.29 (↑1.62)** | **66.32 (↑0.40)** | **51.92 (↑0.97)** |
 
-Note: "-" indicates that the data is not available.
-
 **ImageNet-LT.**
 The encoder is ResNet-10. The classification accuracies in percentages are provided. "↑" indicates the improvements over the baseline. The best numbers are in **bold**.
 
@@ -89,7 +87,6 @@ The encoder is ResNet-10. The classification accuracies in percentages are provi
 | CE+LDMLR               | 57.2             | 29.2               | 7.3             | 37.2 ↑1.4       |
 | Label shift+LDMLR      | 50.9             | 39.4               | 23.7            | 42.2 ↑0.5       |
 | **WCDAS+LDMLR**        | **57.0**         | **41.2**           | **23.4**        | **44.8 ↑0.2**   |
-
 
 *code reference*
 [WCDAS](https://github.com/boranhan/wcdas_code), [LT-baseline](https://github.com/ChangkunYe/MAPLS/), [denoising-diffusion-pytorch](https://github.com/lucidrains/denoising-diffusion-pytorch/tree/main/denoising_diffusion_pytorch).
