@@ -1,5 +1,6 @@
 import glob
 import os
+from PIL import Image
 
 import numpy as np
 import torchvision.datasets as dset
@@ -7,8 +8,6 @@ from torchvision import transforms
 from torchvision import transforms
 from torch.utils.data import DataLoader, Dataset
 from torch.utils.data import WeightedRandomSampler, RandomSampler
-
-from PIL import Image
 
 
 def default_loader(path):
