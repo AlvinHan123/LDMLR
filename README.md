@@ -9,6 +9,11 @@ Long-tailed imbalance distribution is a common issue in practical computer visio
 
 ## Framework
 ![framework](assets/framework.png)
+
+<p align="center">
+  <img width="900" src="https://github.com/AlvinHan123/LDMLR/blob/main/assets/framework.png"> 
+</p>
+
 Overview of the proposed framework, LDMLR. The figure describes the training of the framework: (a) obtain encoded features by a pre-training convolutional neural network on the long-tailed training set, (b) Generate pseudo-features by the diffusion model using encoded features, and (c) Train the fully connected layers using encoded and pseudo-features. The encoder from (a) and the classifier from (c) are used to predict long-tailed data in the evaluation stage.
 
 
