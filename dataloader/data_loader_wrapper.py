@@ -113,6 +113,7 @@ def get_norm_params(dataset):
     else:
         raise Exception('Unsupported dataset %s' % dataset)
 
+
 def Custom_dataset_ImageNet(args):
 
     dataset = {"name" : args.dataset,
