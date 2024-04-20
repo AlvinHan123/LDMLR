@@ -1,11 +1,13 @@
 import os
 import pickle
-import torchvision.datasets as dset
-from torch.utils.data import DataLoader as DLoader
-import numpy as np
-from .dataloader.sampler import get_sampler
-from torchvision import transforms
 from PIL import Image
+
+import numpy as np
+import torchvision.datasets as dset
+from torchvision import transforms
+from torch.utils.data import DataLoader as DLoader
+
+from .dataloader.sampler import get_sampler
 
 normalize = transforms.Normalize(mean=[x / 255.0 for x in [125.3, 123.0, 113.9]],
                                  std=[x / 255.0 for x in [63.0, 62.1, 66.7]])
@@ -21,6 +23,7 @@ data_transforms = {
         normalize
     ])
 }
+
 
 def load_data(datapath, data_transforms, params):
     # kwargs = {'num_workers': params['num_workers'], 'pin_memory': params['pin_memory'], 'drop_last': True}
