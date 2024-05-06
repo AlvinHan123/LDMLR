@@ -28,7 +28,7 @@ conda create -n LDMLR python=3.9
 conda activate LDMLR
 
 # install pytorch
-pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # install dependencies
 pip install -r requirements.txt
