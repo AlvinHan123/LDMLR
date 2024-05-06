@@ -66,6 +66,11 @@ data
  python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed
  ```
 
+Example(cifar10, long-tailed ratio:0.01, resnet32)
+```bash
+python main.py --datapath ./data/CIFAR10_LT001 --model_fixed ./pretrained_models/resnet32_cifar10_lt001.checkpoint
+```
+
 ## Results
 **CIFAR-LT.**
 The encoder is ResNet-32. Classification accuracies in percentages are provided. "↑" indicates improvements over the baseline. The best numbers are in **bold**. The results of CE, Label Shift, and WCDAS are obtained by self-implemented networks.
