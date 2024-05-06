@@ -1,4 +1,9 @@
 numpy
+scikit-learn
+denoising_diffusion_pytorch
+ema_pytorch
 collections
+accelerate
+einops
 matplotlib
 scipy
