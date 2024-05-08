@@ -34,6 +34,7 @@ parser.add_argument('--diffusion_step', default=1000, type=int, help='The steps 
 parser.add_argument('--checkpoint', default=None, type=str, help='model path to resume previous training, default None')
 parser.add_argument('--batch_size_fc', default=1024, type=int, help='CNN fully connected layer batch size')
 parser.add_argument('--learning_rate_fc', default=0.001, type=float, help='CNN fully connected layer learning rate')
+parser.add_argument('--eval', default=None, type=str, help='evaluate the model performance')
 
 parser.add_argument('--is_diffusion_pretrained', default = None, help='pre-trained diffusion model path. Training from scratch if None')
 parser.add_argument('--generation_mmf', default=None, type=str, help='CNN fully connected layer batch size')
