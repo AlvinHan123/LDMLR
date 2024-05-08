@@ -61,12 +61,10 @@ data
             ...
 ```
 
-### Training
  ```
+ # train
  python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed
- ```
-### Testing
- ```
+# test
  python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval your_pretrained_LDMLR
  ```
 
@@ -76,6 +74,13 @@ Example(cifar10, long-tailed ratio:0.01, resnet32)
 python main.py --datapath ./data/CIFAR10_LT001 --model_fixed ./pretrained_models/resnet32_cifar10_lt001.checkpoint
 # test
  python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval ./saved_models/ckpt_best_ce.checkpoint
+```
+
+#### WCDAS
+```bash
+# train
+python ./WCDAS_code/main_train.py --dataset cifar10lt --model_file ./WCDAS_code/pretrained_models/cifar10lt_loss_WCDAS_CIFARLT_ResNet32Feature_lr_0.2_ir_100_model/model_best.pth.tar --net-config ResNet32Feature
+python ./WCDAS_code/main_finetune.py --dataset cifar10lt --model-file ./WCDAS_code/results/cifar10lt_loss_WCDAS_CIFARLT_ResNet32Feature_lr_0.2_ir_100_gener_0.2_DMepoch_201_model_new/ --is_diffusion_pretrained ./WCDAS_code/pretrained_models/diffusion_model_ResNet32Feature_cifar10lt_0.01_epoch_200.pt
 ```
 
 ## Results
