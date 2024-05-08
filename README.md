@@ -17,11 +17,10 @@ Overview of the proposed framework, LDMLR. The figure describes the training of 
 
 
 ## Installation
-- You must have an NVIDIA graphics card with at least 20GB (if ImageNet) VRAM and have [CUDA](https://developer.nvidia.com/cuda-downloads) installed.
 - Install `Python >= 3.8` `PyTorch >= 1.12`.
 - (Optional, Recommended) Create a virtual environment as follows:
 
-```sh
+```
 git clone https://github.com/AlvinHan123/LDMLR
 cd LDMLR
 
@@ -71,15 +70,13 @@ python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_o
 python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval your_pretrained_LDMLR
 
 # Example (CIFAR-10-LT, Long-tailed ratio:0.01, ResNet-32)
-# Train
 python main.py --datapath ./data/CIFAR10_LT001 --model_fixed ./pretrained_models/resnet32_cifar10_lt001.checkpoint
-# Test
 python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval ./saved_models/ckpt_best_ce.checkpoint
  ```
 
 #### WCDAS
-```bash
-# train
+```
+# Train
 python ./WCDAS_code/main_train.py --dataset cifar10lt --model_file ./WCDAS_code/pretrained_models/cifar10lt_loss_WCDAS_CIFARLT_ResNet32Feature_lr_0.2_ir_100_model/model_best.pth.tar --net-config ResNet32Feature
 python ./WCDAS_code/main_finetune.py --dataset cifar10lt --model-file ./WCDAS_code/results/cifar10lt_loss_WCDAS_CIFARLT_ResNet32Feature_lr_0.2_ir_100_gener_0.2_DMepoch_201_model_new/ --is_diffusion_pretrained ./WCDAS_code/pretrained_models/diffusion_model_ResNet32Feature_cifar10lt_0.01_epoch_200.pt
 ```
