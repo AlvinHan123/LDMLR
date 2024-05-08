@@ -65,10 +65,17 @@ data
  ```
  python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed
  ```
+### Testing
+ ```
+ python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval your_pretrained_LDMLR
+ ```
 
 Example(cifar10, long-tailed ratio:0.01, resnet32)
 ```bash
+# train
 python main.py --datapath ./data/CIFAR10_LT001 --model_fixed ./pretrained_models/resnet32_cifar10_lt001.checkpoint
+# test
+ python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval ./saved_models/ckpt_best_ce.checkpoint
 ```
 
 ## Results
