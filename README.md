@@ -61,6 +61,7 @@ data
             ...
 ```
 
+#### CE and Label shift
  ```
  # train
  python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed
