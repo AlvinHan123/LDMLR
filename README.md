@@ -1,11 +1,12 @@
 # LDMLR
-
-The Pytorch implementation for the following paper (accpeted by L3D-IVU CVPR2024):
-
+\
+The Pytorch implementation for the following paper (accpeted by L3D-IVU CVPR2024): \
 **"Latent-based Diffusion Model for Long-tailed Recognition"**
+
 
 ## Abstract
 Long-tailed imbalance distribution is a common issue in practical computer vision applications. Previous works proposed methods to address this problem, which can be categorized into several classes: re-sampling, re-weighting, transfer learning, and feature augmentation. In recent years, diffusion models have shown an impressive generation ability in many sub-problems of deep computer vision. However, its powerful generation has not been explored in long-tailed problems. We propose a new approach, the Latent-based Diffusion Model for Long-tailed Recognition (LDMLR), as a feature augmentation method to tackle the issue. First, we encode the imbalanced dataset into features using the baseline model. Then, we train a Denoising Diffusion Implicit Model (DDIM) using these encoded features to generate pseudo-features. Finally, we train the classifier using the encoded and pseudo-features from the previous two steps. The model's accuracy shows an improvement on the CIFAR-LT and ImageNet-LT datasets by using the proposed method.
+
 
 ## Framework
 <p align="center">
@@ -33,6 +34,7 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 # install dependencies
 pip install -r requirements.txt
 ```
+
 
 ## Usage
 ### Dataset
@@ -63,19 +65,17 @@ data
 
 #### CE and Label shift
  ```
- # train
- python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed
-# test
- python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval your_pretrained_LDMLR
- ```
+# Train
+python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed
+# Test
+python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval your_pretrained_LDMLR
 
-Example(cifar10, long-tailed ratio:0.01, resnet32)
-```bash
-# train
+# Example (CIFAR-10-LT, Long-tailed ratio:0.01, ResNet-32)
+# Train
 python main.py --datapath ./data/CIFAR10_LT001 --model_fixed ./pretrained_models/resnet32_cifar10_lt001.checkpoint
-# test
- python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval ./saved_models/ckpt_best_ce.checkpoint
-```
+# Test
+python main.py --datapath your_datapath --model_fixed your_pretrained_resnet32_on_long_tailed --eval ./saved_models/ckpt_best_ce.checkpoint
+ ```
 
 #### WCDAS
 ```bash
@@ -83,6 +83,7 @@ python main.py --datapath ./data/CIFAR10_LT001 --model_fixed ./pretrained_models
 python ./WCDAS_code/main_train.py --dataset cifar10lt --model_file ./WCDAS_code/pretrained_models/cifar10lt_loss_WCDAS_CIFARLT_ResNet32Feature_lr_0.2_ir_100_model/model_best.pth.tar --net-config ResNet32Feature
 python ./WCDAS_code/main_finetune.py --dataset cifar10lt --model-file ./WCDAS_code/results/cifar10lt_loss_WCDAS_CIFARLT_ResNet32Feature_lr_0.2_ir_100_gener_0.2_DMepoch_201_model_new/ --is_diffusion_pretrained ./WCDAS_code/pretrained_models/diffusion_model_ResNet32Feature_cifar10lt_0.01_epoch_200.pt
 ```
+
 
 ## Results
 **CIFAR-LT.**
@@ -109,7 +110,7 @@ The encoder is ResNet-10. The classification accuracies in percentages are provi
 | Label shift+LDMLR      | 50.9             | 39.4               | 23.7            | 42.2 ↑0.5       |
 | **WCDAS+LDMLR**        | **57.0**         | **41.2**           | **23.4**        | **44.8 ↑0.2**   |
 
-*Code reference*
+Code references: \
 [WCDAS](https://github.com/boranhan/wcdas_code), [LT-baseline](https://github.com/ChangkunYe/MAPLS/), [denoising-diffusion-pytorch](https://github.com/lucidrains/denoising-diffusion-pytorch/tree/main/denoising_diffusion_pytorch).
 
 
