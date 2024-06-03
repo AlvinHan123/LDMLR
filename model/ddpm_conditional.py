@@ -461,9 +461,7 @@ class ConditionalDiffusion1D(nn.Module):
         self.model = model
         self.channels = self.model.channels
         self.self_condition = self.model.self_condition
-
         self.seq_length = seq_length
-
         self.objective = objective
 
         assert objective in {'pred_noise', 'pred_x0', 'pred_v'}, 'objective must be either pred_noise (predict noise) or pred_x0 (predict image start) or pred_v (predict v [v-parameterization as defined in appendix D of progressive distillation paper, used in imagen-video successfully])'
@@ -483,7 +481,6 @@ class ConditionalDiffusion1D(nn.Module):
         self.num_timesteps = int(timesteps)
 
         # sampling related parameters
-
         self.sampling_timesteps = default(sampling_timesteps, timesteps) # default num sampling timesteps to number of timesteps at training
 
         assert self.sampling_timesteps <= timesteps
@@ -491,7 +488,6 @@ class ConditionalDiffusion1D(nn.Module):
         self.ddim_sampling_eta = ddim_sampling_eta
 
         # helper function to register buffer from float64 to float32
-
         register_buffer = lambda name, val: self.register_buffer(name, val.to(torch.float32))
 
         register_buffer('betas', betas)
@@ -499,7 +495,6 @@ class ConditionalDiffusion1D(nn.Module):
         register_buffer('alphas_cumprod_prev', alphas_cumprod_prev)
 
         # calculations for diffusion q(x_t | x_{t-1}) and others
-
         register_buffer('sqrt_alphas_cumprod', torch.sqrt(alphas_cumprod))
         register_buffer('sqrt_one_minus_alphas_cumprod', torch.sqrt(1. - alphas_cumprod))
         register_buffer('log_one_minus_alphas_cumprod', torch.log(1. - alphas_cumprod))
@@ -507,21 +502,17 @@ class ConditionalDiffusion1D(nn.Module):
         register_buffer('sqrt_recipm1_alphas_cumprod', torch.sqrt(1. / alphas_cumprod - 1))
 
         # calculations for posterior q(x_{t-1} | x_t, x_0)
-
         posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)
 
         # above: equal to 1. / (1. / (1. - alpha_cumprod_tm1) + alpha_t / beta_t)
-
         register_buffer('posterior_variance', posterior_variance)
 
         # below: log calculation clipped because the posterior variance is 0 at the beginning of the diffusion chain
-
         register_buffer('posterior_log_variance_clipped', torch.log(posterior_variance.clamp(min =1e-20)))
         register_buffer('posterior_mean_coef1', betas * torch.sqrt(alphas_cumprod_prev) / (1. - alphas_cumprod))
         register_buffer('posterior_mean_coef2', (1. - alphas_cumprod_prev) * torch.sqrt(alphas) / (1. - alphas_cumprod))
 
         # calculate loss weight
-
         snr = alphas_cumprod / (1 - alphas_cumprod)
 
         if objective == 'pred_noise':
@@ -534,7 +525,6 @@ class ConditionalDiffusion1D(nn.Module):
         register_buffer('loss_weight', loss_weight)
 
         # whether to autonormalize
-
         self.normalize = normalize_to_neg_one_to_one if auto_normalize else identity
         self.unnormalize = unnormalize_to_zero_to_one if auto_normalize else identity
 
@@ -618,9 +608,7 @@ class ConditionalDiffusion1D(nn.Module):
     @torch.no_grad()
     def p_sample_loop(self, label, shape):
         batch, device = shape[0], self.betas.device
-
         img = torch.randn(shape, device=device)
-
         x_start = None
 
         for t in tqdm(reversed(range(0, self.num_timesteps)), total = self.num_timesteps, disable=False):
@@ -639,7 +627,6 @@ class ConditionalDiffusion1D(nn.Module):
         time_pairs = list(zip(times[:-1], times[1:])) # [(T-1, T-2), (T-2, T-3), ..., (1, 0), (0, -1)]
 
         img = torch.randn(shape, device = device)
-
         x_start = None
 
         for time, time_next in tqdm(time_pairs):
@@ -684,7 +671,6 @@ class ConditionalDiffusion1D(nn.Module):
         xt1, xt2 = map(lambda x: self.q_sample(x, t = t_batched), (x1, x2))
 
         img = (1 - lam) * xt1 + lam * xt2
-
         x_start = None
 
         for i in tqdm(reversed(range(0, t)), desc = 'interpolation sample time step', total = t):
@@ -707,7 +693,6 @@ class ConditionalDiffusion1D(nn.Module):
         noise = default(noise, lambda: torch.randn_like(x_start))
 
         # noise sample
-
         x = self.q_sample(x_start = x_start, t = t, noise = noise)
 
         # if doing self-conditioning, 50% of the time, predict x_start from current set of times
@@ -721,7 +706,6 @@ class ConditionalDiffusion1D(nn.Module):
                 x_self_cond.detach_()
 
         # predict and take gradient step
-
         model_out = self.model(x, t, label, x_self_cond)
 
         if self.objective == 'pred_noise':
