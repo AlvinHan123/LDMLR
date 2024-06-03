@@ -1,11 +1,15 @@
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
-from networks.resnet import resnet50
+
+import torch
 from torch import optim, nn
 from torch.utils.data import TensorDataset, DataLoader
-import torch
+
+from networks.resnet import resnet50
 from utilis.test_ft import test_ft
+
+
 def feature_encode(dataset, dataset_info, model_fixed_path, args):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -42,7 +46,6 @@ def feature_encode(dataset, dataset_info, model_fixed_path, args):
     # Stack all features and labels
     features_tensor = torch.cat(feature_set, dim=0)
     labels_tensor = torch.cat(label_set, dim=0)
-
     # Create new TensorDataset and DataLoader
     new_dataset = TensorDataset(features_tensor, labels_tensor)
     new_dataloader = DataLoader(new_dataset, batch_size=256)  # You can set your own batch_size
