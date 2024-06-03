@@ -1,25 +1,27 @@
 # code reference: https://colab.research.google.com/drive/1IJkrrV-D7boSCLVKhi7t5docRYqORtm3#scrollTo=jpy3GC7XzC7J
-
 import os
 import argparse
 # os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
 import time
 import logging
-import torch
 import random
-from torchvision.transforms import Compose, ToTensor, Lambda, ToPILImage, CenterCrop, Resize
-from contextlib import contextmanager
-from utilis.utils import move_model_to_cpu
-from torch.utils.data import TensorDataset, DataLoader
-from utilis.test_ft import test_ft
-from model.ddpm_conditional import UNet_conditional, ConditionalDiffusion1D
-from copy import deepcopy
 import math
+from copy import deepcopy
+from contextlib import contextmanager
+from collections import defaultdict
+
 import torch
 from torch import optim, nn
 from torch.nn import functional as F
-from collections import defaultdict
+from torchvision.transforms import Compose, ToTensor, Lambda, ToPILImage, CenterCrop, Resize
+from torch.utils.data import TensorDataset, DataLoader
+
+from utilis.utils import move_model_to_cpu
+from utilis.test_ft import test_ft
 from utilis.metric import cal_FID_per_class, calculate_fid, unload_feature_vectors
+from model.ddpm_conditional import UNet_conditional, ConditionalDiffusion1D
+
 
 def generate_class_specific_noise(class_num, channel_num = 1, sequence_length = 64):
     torch.manual_seed(123)
@@ -30,6 +32,7 @@ def generate_class_specific_noise(class_num, channel_num = 1, sequence_length = 
         noise = torch.randn(1, channel_num, sequence_length)
         class_specific_noises.append(noise)
     return class_specific_noises
+
 
 def label_to_noise(labels, class_num, variance=0.001):
     class_specific_noise = generate_class_specific_noise(class_num)
@@ -64,7 +67,6 @@ def ema_update(model, averaged_model, decay):
 
 
 def diffusion_train(dataloader_train, dataloader_test, feature_dataloader_tr, dataset_info, dset_info, args):
-
     # Create the model and optimizer
     seed = 123
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -86,6 +88,7 @@ def diffusion_train(dataloader_train, dataloader_test, feature_dataloader_tr, da
             timesteps=1000,
             objective='pred_x0'
         )
+        
     elif args.dataset == "ImageNet":
         model = UNet_conditional(
             dim=512,
@@ -218,7 +221,7 @@ def diffusion_train(dataloader_train, dataloader_test, feature_dataloader_tr, da
                     class_num.append(0)
             else:
                 class_num.append(max(round(num * args.feature_ratio), 5))
-
+                
     # FIXME sample features by diffusion seperately
     # Move model to CPU and clear CUDA cache
     move_model_to_cpu(diffusion_model)
