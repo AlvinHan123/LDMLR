@@ -50,7 +50,8 @@ def main():
                                                                              args.feature_ratio, args.diffusion_step))
     print("--epoch: {} --dataset: {} --imb_factor:{} --feature_ratio:{} "
           "--diffusion_step:{} (DDPM official)".format(args.epoch, args.dataset, args.imb_factor, args.feature_ratio, args.diffusion_step))
-    # 1. load data -------------------------------------------------------------------------------------------------------------
+    
+    # Load data ------------------------------------------------------------------------------------------------------------------
     # ouput: dataloader of cifar10/cifar100/ImageNet
     cfg, finish = config_setup(args.config,
                                args.checkpoint,
@@ -69,15 +70,15 @@ def main():
         evaluation(test_set, dset_info, dataset_info, args, cfg)
         exit()
 
-    # 2. Encoder - encode images into features (batch_size, feature_dim)--------------------------------------------------------
+    # 1. Encoder - encode images into features (batch_size, feature_dim) --------------------------------------------------------
     # input: image dataloader (batch_size, 3, 32, 32); output: feature dataloader (batch_size, 64)
     feature_dataset_tr, feature_dataloader_tr = feature_encode(train_set, dataset_info, args.model_fixed, args)
 
-    # 3. training a diffusion model and generate features
-    # input: cifar training set, cifar testing set, feature dataloader; output: generated features by diffusion ------------
+    # 2. Training a diffusion model and generate features
+    # input: cifar training set, cifar testing set, feature dataloader; output: generated features by diffusion -----------------
     generated_features, fake_classes = diffusion_train(train_set, test_set, feature_dataloader_tr, dataset_info, dset_info, args)  # FIXME Official DDPM/DDIM
 
-    # fine-tuning a fully-connected layer using generated features
+    # 3. Fine-tuning a fully-connected layer using generated features
     fine_tune_fc(generated_features, fake_classes, feature_dataset_tr, test_set, dataset_info, args, dset_info)
 
     print(" ------------Finish--------------")
