@@ -2,8 +2,10 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
+
 from scipy.stats import entropy
 from typing import Type, Any, Callable, Union, List, Optional
+
 from utilis.utils import normalized
 
 
@@ -204,6 +206,3 @@ def group_data(data: tuple, label: List[int], cls: List[int]):
             data_group[j][l].append(data[j][i])
 
     return data_group
-
-
-
