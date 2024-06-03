@@ -5,7 +5,6 @@ from PIL import Image
 
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader, ConcatDataset
-
 from dataloader.sampler import get_sampler
 
 data_transforms = {
