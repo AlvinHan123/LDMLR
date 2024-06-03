@@ -64,7 +64,6 @@ class Checkpoint:
                 if 'ensemble_info' not in self._cfg['model'].keys():
                     self.update(['model', 'ensemble_info'], self._cfg['backbone']['ensemble_info'])
 
-
     @property
     def resume(self):
         return self._resume
@@ -155,7 +154,6 @@ class Checkpoint:
         torch.save(self._cfg, path)
 
 
-
 def set_nested_item(dataDict, mapList, val):
     """Set item in nested dictionary"""
     add = False
@@ -163,8 +161,3 @@ def set_nested_item(dataDict, mapList, val):
         add = True
     reduce(getitem, mapList[:-1], dataDict)[mapList[-1]] = val
     return dataDict, add
-
-
-
-
-
