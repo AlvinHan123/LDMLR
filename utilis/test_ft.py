@@ -1,16 +1,18 @@
+import os
 import argparse
+
 import numpy as np
+import torch
 import time
 import logging
-import torch
-from utilis.tester_ft import tester_ft
 import json
 import copy
+
+from utilis.tester_ft import tester_ft
 from utilis.config_parse import config_setup
 from dataloader.data_loader_wrapper import data_loader_wrapper
-from  dataloader.Custom_Dataloader import Custom_dataset, data_loader_wrapper_cust
+from dataloader.Custom_Dataloader import Custom_dataset, data_loader_wrapper_cust
 
-import os
 
 def test_ft(datapath, args, modelpath=None, crt_modelpath=None, test_cfg=None):
     # ---------------------------Load Saved Model---------------------------#
@@ -57,6 +59,7 @@ def test_ft(datapath, args, modelpath=None, crt_modelpath=None, test_cfg=None):
     logging.info('Test performance on test set.')
     model = tester_ft(test_set, train_set, val_set, config, args)
     return model
+
 
 def default(obj):
     if isinstance(obj, np.ndarray):
