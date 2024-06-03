@@ -1,10 +1,10 @@
 # Code reference(Colab CIFAR10 Diffusion): https://colab.research.google.com/drive/1IJkrrV-D7boSCLVKhi7t5docRYqORtm3
-
 from contextlib import contextmanager
 from copy import deepcopy
 import math
 import torch
 from torch import optim, nn
+
 
 # Utilities
 @contextmanager
@@ -42,6 +42,7 @@ def ema_update(model, averaged_model, decay):
 
     for name, buf in model_buffers.items():
         averaged_buffers[name].copy_(buf)
+
 
 # Define the model (a residual U-Net)
 class ResidualBlock(nn.Module):
@@ -96,8 +97,7 @@ class Diffusion(nn.Module):
         # The inputs to timestep_embed will approximately fall into the range
         # -10 to 10, so use std 0.2 for the Fourier Features.
         self.timestep_embed = FourierFeatures(1, 16, std=0.2)
-        # nn.Embedding的输入改了；
-        # embedding的数据不能大于等于词典大小，只给五个字典的话，就对这五个embedding；sampling的时候给十个字典，可以对这十个编码
+        
         if name == "CIFAR10":
             self.class_embed = nn.Embedding(10, 4)
             self.class_emb_num = 4
@@ -128,9 +128,11 @@ def get_alphas_sigmas(log_snrs):
     noise (sigma), given the log SNR for a timestep."""
     return log_snrs.sigmoid().sqrt(), log_snrs.neg().sigmoid().sqrt()
 
+
 def get_ddpm_schedule(t):
     """Returns log SNRs for the noise schedule from the DDPM paper."""
     return -torch.special.expm1(1e-4 + 10 * t**2).log()
+
 
 @torch.no_grad()
 def sample(model, x, steps, classes, eta = 0.):
@@ -188,16 +190,14 @@ def eval_loss(model, rng, reals, classes, device):
     alphas = alphas[:, None]
     sigmas = sigmas[:, None]
     noise = torch.randn_like(reals)
-    # 加噪的原图
     noised_reals = reals * alphas + noise * sigmas
-    # 真实噪声？？只看代码这确实是真实噪声
     targets = noise * alphas - reals * sigmas
 
     # Compute the model output and the loss.   ------ non weighted
     with torch.cuda.amp.autocast():
-        # v是predicted noise
         v = model(noised_reals, log_snrs, classes)
         return (v - targets).pow(2).mean([1]).mul(weights).mean()
+
 
 def diffusion_train_colab(dataloader_train, dataloader_test, feature_dataloader_tr, dataset_info, dset_info, args):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -245,11 +245,11 @@ def diffusion_train_colab(dataloader_train, dataloader_test, feature_dataloader_
     if args.dataset == "CIFAR10":
         num_per_class = int(sample_batch / 10)
         noise = torch.randn([sample_batch, 64], device=device)
-        fakes_classes = torch.arange(10, device=device).repeat_interleave(num_per_class, 0)  # 原代码 -- 均匀生成十类
+        fakes_classes = torch.arange(10, device=device).repeat_interleave(num_per_class, 0)
     elif args.dataset == "CIFAR100":
         num_per_class = int(sample_batch / 100)
         noise = torch.randn([sample_batch, 64], device=device)
-        fakes_classes = torch.arange(100, device=device).repeat_interleave(num_per_class, 0)  # 原代码 -- 均匀生成十类
+        fakes_classes = torch.arange(100, device=device).repeat_interleave(num_per_class, 0)
 
     steps = 1000
     samples = sample(diffusion_model_ema, noise, steps, fakes_classes)
