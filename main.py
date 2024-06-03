@@ -64,7 +64,7 @@ def main():
         dataset_info = Custom_dataset_ImageNet(args)
         train_set, val_set, test_set, dset_info = data_loader_wrapper(cfg.dataset)
 
-     # If eval the model performance
+    # If eval the model performance
     if args.eval != None:
         evaluation(test_set, dset_info, dataset_info, args, cfg)
         exit()
