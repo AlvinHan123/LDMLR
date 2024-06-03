@@ -7,8 +7,8 @@ from collections import namedtuple
 from multiprocessing import cpu_count
 
 import torch
-from torch import nn, einsum, Tensor
 import torch.nn.functional as F
+from torch import nn, einsum, Tensor
 from torch.cuda.amp import autocast
 from torch.optim import Adam
 from torch.utils.data import Dataset, DataLoader
@@ -18,35 +18,38 @@ from einops.layers.torch import Rearrange
 
 from accelerate import Accelerator
 from ema_pytorch import EMA
-
 from tqdm.auto import tqdm
-
 from denoising_diffusion_pytorch.version import __version__
 
-# constants
 
+# constants
 ModelPrediction =  namedtuple('ModelPrediction', ['pred_noise', 'pred_x_start'])
 
-# helpers functions
 
+# helpers functions
 def exists(x):
     return x is not None
+
 
 def default(val, d):
     if exists(val):
         return val
     return d() if callable(d) else d
 
+
 def identity(t, *args, **kwargs):
     return t
+
 
 def cycle(dl):
     while True:
         for data in dl:
             yield data
 
+
 def has_int_squareroot(num):
     return (math.sqrt(num) ** 2) == num
+
 
 def num_to_groups(num, divisor):
     groups = num // divisor
@@ -56,21 +59,23 @@ def num_to_groups(num, divisor):
         arr.append(remainder)
     return arr
 
+
 def convert_image_to_fn(img_type, image):
     if image.mode != img_type:
         return image.convert(img_type)
     return image
 
-# normalization functions
 
+# normalization functions
 def normalize_to_neg_one_to_one(img):
     return img * 2 - 1
+
 
 def unnormalize_to_zero_to_one(t):
     return (t + 1) * 0.5
 
-# data
 
+# data
 class Dataset1D(Dataset):
     def __init__(self, tensor: Tensor):
         super().__init__()
@@ -82,8 +87,8 @@ class Dataset1D(Dataset):
     def __getitem__(self, idx):
         return self.tensor[idx].clone()
 
-# small helper modules
 
+# small helper modules
 class Residual(nn.Module):
     def __init__(self, fn):
         super().__init__()
@@ -92,14 +97,17 @@ class Residual(nn.Module):
     def forward(self, x, *args, **kwargs):
         return self.fn(x, *args, **kwargs) + x
 
+
 def Upsample(dim, dim_out = None):
     return nn.Sequential(
         nn.Upsample(scale_factor = 2, mode = 'nearest'),
         nn.Conv1d(dim, default(dim_out, dim), 1, padding = 0)
     )
 
+
 def Downsample(dim, dim_out = None):
     return nn.Conv1d(dim, default(dim_out, dim), 1, 2)
+
 
 class RMSNorm(nn.Module):
     def __init__(self, dim):
@@ -108,6 +116,7 @@ class RMSNorm(nn.Module):
 
     def forward(self, x):
         return F.normalize(x, dim = 1) * self.g * (x.shape[1] ** 0.5)
+
 
 class PreNorm(nn.Module):
     def __init__(self, dim, fn):
@@ -119,8 +128,8 @@ class PreNorm(nn.Module):
         x = self.norm(x)
         return self.fn(x)
 
-# sinusoidal positional embeds
 
+# sinusoidal positional embeds
 class SinusoidalPosEmb(nn.Module):
     def __init__(self, dim, theta = 10000):
         super().__init__()
@@ -135,6 +144,7 @@ class SinusoidalPosEmb(nn.Module):
         emb = x[:, None] * emb[None, :]
         emb = torch.cat((emb.sin(), emb.cos()), dim=-1)
         return emb
+
 
 class RandomOrLearnedSinusoidalPosEmb(nn.Module):
     """ following @crowsonkb 's lead with random (learned optional) sinusoidal pos emb """
@@ -153,8 +163,8 @@ class RandomOrLearnedSinusoidalPosEmb(nn.Module):
         fouriered = torch.cat((x, fouriered), dim = -1)
         return fouriered
 
-# building block modules
 
+# building block modules
 class Block(nn.Module):
     def __init__(self, dim, dim_out, groups = 8):
         super().__init__()
@@ -173,6 +183,7 @@ class Block(nn.Module):
         x = self.act(x)
         return x
 
+
 class ResnetBlock(nn.Module):
     def __init__(self, dim, dim_out, *, time_emb_dim = None, groups = 8):
         super().__init__()
@@ -186,7 +197,6 @@ class ResnetBlock(nn.Module):
         self.res_conv = nn.Conv1d(dim, dim_out, 1) if dim != dim_out else nn.Identity()
 
     def forward(self, x, time_emb = None):
-
         scale_shift = None
         if exists(self.mlp) and exists(time_emb):
             time_emb = self.mlp(time_emb)
@@ -198,6 +208,7 @@ class ResnetBlock(nn.Module):
         h = self.block2(h)
 
         return h + self.res_conv(x)
+
 
 class LinearAttention(nn.Module):
     def __init__(self, dim, heads = 4, dim_head = 32):
@@ -228,6 +239,7 @@ class LinearAttention(nn.Module):
         out = rearrange(out, 'b h c n -> b (h c) n', h = self.heads)
         return self.to_out(out)
 
+
 class Attention(nn.Module):
     def __init__(self, dim, heads = 4, dim_head = 32):
         super().__init__()
@@ -251,6 +263,7 @@ class Attention(nn.Module):
 
         out = rearrange(out, 'b h n d -> b (h d) n')
         return self.to_out(out)
+
 
 # model
 class UNet_conditional(nn.Module):
@@ -355,9 +368,7 @@ class UNet_conditional(nn.Module):
         # self.final_res_block = block_klass(dim * 2, dim, time_emb_dim=time_dim)
         # self.final_conv = nn.Conv1d(dim, self.out_dim, 1)
 
-
     def forward(self, x, time, y_label, x_self_cond = None):
-
         if self.self_condition:
             x_self_cond = default(x_self_cond, lambda: torch.zeros_like(x))
             x = torch.cat((x_self_cond, x), dim = 1)
@@ -407,18 +418,20 @@ class UNet_conditional(nn.Module):
 
         return self.final_conv(x)
 
-# gaussian diffusion trainer class
 
+# gaussian diffusion trainer class
 def extract(a, t, x_shape):
     b, *_ = t.shape
     out = a.gather(-1, t)
     return out.reshape(b, *((1,) * (len(x_shape) - 1)))
+
 
 def linear_beta_schedule(timesteps):
     scale = 1000 / timesteps
     beta_start = scale * 0.0001
     beta_end = scale * 0.02
     return torch.linspace(beta_start, beta_end, timesteps, dtype = torch.float64)
+
 
 def cosine_beta_schedule(timesteps, s = 0.008):
     """
@@ -431,6 +444,7 @@ def cosine_beta_schedule(timesteps, s = 0.008):
     alphas_cumprod = alphas_cumprod / alphas_cumprod[0]
     betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
     return torch.clip(betas, 0, 0.999)
+
 
 class ConditionalDiffusion1D(nn.Module):
     def __init__(
@@ -618,7 +632,6 @@ class ConditionalDiffusion1D(nn.Module):
         img = self.unnormalize(img)
         return img
 
-
     @torch.no_grad()
     def ddim_sample(self, shape, clip_denoised = True):
         batch, device, total_timesteps, sampling_timesteps, eta, objective = shape[0], self.betas.device, self.num_timesteps, self.sampling_timesteps, self.ddim_sampling_eta, self.objective
@@ -736,5 +749,3 @@ class ConditionalDiffusion1D(nn.Module):
 
         img = self.normalize(img)
         return self.p_losses(img, label, t, *args, **kwargs)
-
-
