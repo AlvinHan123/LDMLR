@@ -1,12 +1,14 @@
 import sys
+import os
+import logging
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
-import logging
 from model.model_init import model_init
-import os
+
+
 def tester_ft(dataset, trainset, valset, config, args):
 
     # --------------------------Load Backbone---------------------------------#
