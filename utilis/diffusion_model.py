@@ -1,7 +1,6 @@
 # code reference: https://colab.research.google.com/drive/1IJkrrV-D7boSCLVKhi7t5docRYqORtm3#scrollTo=jpy3GC7XzC7J
 import os
 import argparse
-# os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 import time
 import logging
