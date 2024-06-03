@@ -115,7 +115,6 @@ def get_norm_params(dataset):
 
 
 def Custom_dataset_ImageNet(args):
-
     dataset = {"name" : args.dataset,
                "class_num" : 1000,
                "imb_factor" : args.imb_factor,
