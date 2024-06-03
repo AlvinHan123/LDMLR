@@ -4,6 +4,18 @@ The Pytorch implementation for the following paper (accpeted by L3D-IVU CVPR2024
 **"Latent-based Diffusion Model for Long-tailed Recognition"**
 
 
+## Paper and Citation  
+If you find our paper/code is useful, please cite:
+```
+@article{han2024latent,
+  title={Latent-based Diffusion Model for Long-tailed Recognition},
+  author={Han, Pengxiao and Ye, Changkun and Zhou, Jieming and Zhang, Jing and Hong, Jie and Li, Xuesong},
+  journal={arXiv preprint arXiv:2404.04517},
+  year={2024}
+}
+```
+
+
 ## Framework
 <p align="center">
   <img width="750" src="https://github.com/AlvinHan123/LDMLR/blob/main/assets/framework.png"> 
@@ -105,15 +117,3 @@ The encoder is ResNet-10. The classification accuracies in percentages are provi
 
 Code references: \
 [WCDAS](https://github.com/boranhan/wcdas_code), [LT-baseline](https://github.com/ChangkunYe/MAPLS/), [denoising-diffusion-pytorch](https://github.com/lucidrains/denoising-diffusion-pytorch/tree/main/denoising_diffusion_pytorch).
-
-
-## Paper and Citation  
-If you find our paper/code is useful, please cite:
-```
-@article{han2024latent,
-  title={Latent-based Diffusion Model for Long-tailed Recognition},
-  author={Han, Pengxiao and Ye, Changkun and Zhou, Jieming and Zhang, Jing and Hong, Jie and Li, Xuesong},
-  journal={arXiv preprint arXiv:2404.04517},
-  year={2024}
-}
-```
