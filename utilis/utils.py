@@ -1,21 +1,26 @@
 import numpy as np
 import torch
 
+
 def normalized(a, axis=-1, order=2):
     l2 = np.atleast_1d(np.linalg.norm(a, order, axis))
     l2[l2 == 0] = 1
     return a / np.expand_dims(l2, axis)
 
+
 def move_model_to_device(model, device):
     model.to(device)
     return model
 
+
 def move_model_to_cpu(model):
     return model.cpu()
+
 
 def clear_cuda_cache():
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
+
 
 def get_stamp(cfg, crt_cfg=None):
     lrs = cfg.lr_scheduler['name'][0] if 'lr_scheduler' in cfg.keys else 'n'
