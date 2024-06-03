@@ -1,7 +1,8 @@
 import torch
-from torch import Tensor
 import torch.nn as nn
+from torch import Tensor
 from torch.hub import load_state_dict_from_url
+
 from typing import Type, Any, Callable, Union, List, Optional
 from networks.NormLayer import NormedLinear
 
