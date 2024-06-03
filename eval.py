@@ -1,16 +1,17 @@
 import logging
 
+import numpy as np
 import torch
+import torch.nn as nn
+from torch.nn import functional as F
+from torch.utils.data import TensorDataset, DataLoader, ConcatDataset
+import importlib
+
 from model.metrics import *
 from model.label_shift_est import LSC
-from torch.utils.data import TensorDataset, DataLoader, ConcatDataset
-from utilis.test_ft import test_ft
 from model.model_init import model_init
-from torch.nn import functional as F
+from utilis.test_ft import test_ft
 from dataloader.Custom_Dataloader import FeatureDataset
-import torch.nn as nn
-import numpy as np
-import importlib
 
 model_paths = {
     'stage2':        'networks.stage_2',
@@ -19,6 +20,7 @@ model_paths = {
     'tail_cifar':    'networks.resnet_cifar_ensemble',
     'tail':          'networks.resnet_ensemble'
 }
+
 
 def get_metrics(probs, labels, cls_num_list):
     labels = [tensor.cpu().item() for tensor in labels]
@@ -29,7 +31,8 @@ def get_metrics(probs, labels, cls_num_list):
     print('Many Medium Few shot Top1 Acc: ' + str(mmf_acc))
     return acc, mmf_acc
 
-# read from main.py directly: test_set, dset_info, dataset_info, args
+
+# Read from main.py directly: test_set, dset_info, dataset_info, args
 def evaluation(test_set, dset_info, dataset_info, args, cfg):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -45,12 +48,10 @@ def evaluation(test_set, dset_info, dataset_info, args, cfg):
     #### --------------- evaluate ---------------
     # Get number of batches
     num_batches = len(test_set)
-
     test_loss, correct, total = 0, 0, 0
-
     probs, labels = [], []
 
-    # since we dont need to update the gradients, we use torch.no_grad()
+    # Since we dont need to update the gradients, we use torch.no_grad()
     with torch.no_grad():
         for data in test_set:
             # Every data instance is an image + label pair
@@ -63,7 +64,7 @@ def evaluation(test_set, dset_info, dataset_info, args, cfg):
             # Compute prediction for this batch
             logit = model(img)
 
-            # compute the loss
+            # Compute the loss
             test_loss += loss_fn(logit, label).item()
 
             # Calculate the index of maximum logit as the predicted label
@@ -71,7 +72,7 @@ def evaluation(test_set, dset_info, dataset_info, args, cfg):
             probs.extend(list(prob.squeeze().cpu().numpy()))
             pred = prob.argmax(dim=1)
 
-            # record correct predictions
+            # Record correct predictions
             correct += (pred == label).type(torch.float).sum().item()
             total += label.size(0)
 
@@ -85,10 +86,8 @@ def evaluation(test_set, dset_info, dataset_info, args, cfg):
     logging.info("Test Error:   Accuracy: {:.2f}, Avg loss: {:.4f} ".format(100 * accuracy, test_loss))
     print("Test Error:   Accuracy: {:.2f}, Avg loss: {:.4f} ".format(100 * accuracy, test_loss))
 
-
     pc_probs = LSC(probs, cls_num_list=dset_info['per_class_img_num'])
     label_shift_acc, mmf_acc_pc = get_metrics(pc_probs, labels, dset_info['per_class_img_num'])
-
 
     logging.info("Test Error:   Accuracy: {:.2f}, Avg loss: {:.4f} ".format(100 * accuracy, test_loss))
     print("Test Error:   Accuracy: {:.2f}, Avg loss: {:.4f} ".format(100 * accuracy, test_loss))
@@ -98,4 +97,5 @@ def evaluation(test_set, dset_info, dataset_info, args, cfg):
 
     logging.info("\n")
     print("\n\n")
+    
     return test_loss, accuracy, label_shift_acc, mmf_acc, mmf_acc_pc #FIXME
