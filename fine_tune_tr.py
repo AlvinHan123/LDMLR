@@ -1,23 +1,23 @@
 import logging
 
+import numpy as np
 import torch
+import torch.nn as nn
+from torch.nn import functional as F
+from torch.utils.data import TensorDataset, DataLoader, ConcatDataset
+
 from model.metrics import *
 from model.label_shift_est import LSC
-from torch.utils.data import TensorDataset, DataLoader, ConcatDataset
 from utilis.test_ft import test_ft
-from torch.nn import functional as F
 from dataloader.Custom_Dataloader import FeatureDataset
-import torch.nn as nn
-import numpy as np
+
 
 # @title Evaluation Loop
 # evaluate_loop(test_set, model_totrain, loss_fn, device, dset_info)# fixme
 def evaluate_loop(dataloader, model, loss_fn, device, dset_info):
     # Get number of batches
     num_batches = len(dataloader)
-
     test_loss, correct, total = 0, 0, 0
-
     probs, labels = [], []
 
     # since we dont need to update the gradients, we use torch.no_grad()
@@ -55,10 +55,8 @@ def evaluate_loop(dataloader, model, loss_fn, device, dset_info):
     logging.info("Test Error:   Accuracy: {:.2f}, Avg loss: {:.4f} ".format(100 * accuracy, test_loss))
     print("Test Error:   Accuracy: {:.2f}, Avg loss: {:.4f} ".format(100 * accuracy, test_loss))
 
-
     pc_probs = LSC(probs, cls_num_list=dset_info['per_class_img_num'])
     label_shift_acc, mmf_acc_pc = get_metrics(pc_probs, labels, dset_info['per_class_img_num'])
-
 
     logging.info("Test Error:   Accuracy: {:.2f}, Avg loss: {:.4f} ".format(100 * accuracy, test_loss))
     print("Test Error:   Accuracy: {:.2f}, Avg loss: {:.4f} ".format(100 * accuracy, test_loss))
@@ -70,6 +68,7 @@ def evaluate_loop(dataloader, model, loss_fn, device, dset_info):
     print("\n\n")
     return test_loss, accuracy, label_shift_acc, mmf_acc, mmf_acc_pc #FIXME
 
+
 def get_metrics(probs, labels, cls_num_list):
     labels = [tensor.cpu().item() for tensor in labels]
     acc = acc_cal(probs, labels, method='top1')
@@ -78,6 +77,7 @@ def get_metrics(probs, labels, cls_num_list):
     logging.info('Many Medium Few shot Top1 Acc: ' + str(mmf_acc))
     print('Many Medium Few shot Top1 Acc: ' + str(mmf_acc))
     return acc, mmf_acc #FIXME
+
 
 def fine_tune_fc(generated_features, fake_classes, feature_dataset_tr, test_set, dataset_info, args, dset_info, cfg):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
