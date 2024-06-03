@@ -204,7 +204,6 @@ class ResnetBlock(nn.Module):
             scale_shift = time_emb.chunk(2, dim = 1)
 
         h = self.block1(x, scale_shift = scale_shift)
-
         h = self.block2(h)
 
         return h + self.res_conv(x)
@@ -230,7 +229,6 @@ class LinearAttention(nn.Module):
 
         q = q.softmax(dim = -2)
         k = k.softmax(dim = -1)
-
         q = q * self.scale
 
         context = torch.einsum('b h d n, b h e n -> b h d e', k, v)
