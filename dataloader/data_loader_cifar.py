@@ -6,7 +6,6 @@ import numpy as np
 import torchvision.datasets as dset
 from torchvision import transforms
 from torch.utils.data import DataLoader as DLoader
-
 from .dataloader.sampler import get_sampler
 
 normalize = transforms.Normalize(mean=[x / 255.0 for x in [125.3, 123.0, 113.9]],
@@ -83,7 +82,7 @@ def data_loader(dataset, datapath, data_transforms, imb_factor=None):
     return train_dataset, val_dataset, test_dataset, dset_info
 
 
-        # ======================== Imbalanced Cifar Data ===============================
+# ======================== Imbalanced Cifar Data ===============================
 def get_img_num_per_cls(dataset, imb_factor=None):
     """
     Get a list of image numbers for each class, given cifar version
