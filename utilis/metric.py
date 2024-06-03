@@ -3,6 +3,8 @@ import torch
 import numpy as np
 from scipy import linalg
 from sklearn.metrics.pairwise import cosine_similarity
+
+
 # Function to extract feature vectors
 def unload_feature_vectors(data_loader):
     features = []
@@ -12,6 +14,7 @@ def unload_feature_vectors(data_loader):
         features.append(feature)
         feature_labels.append(feature_label)
     return torch.cat(features, dim=0), torch.cat(feature_labels, dim=0)
+
 
 def calculate_fid(real_features, generated_features):
     # Move both tensors to the same device (e.g., CPU)
@@ -42,6 +45,7 @@ def calculate_fid(real_features, generated_features):
     fid = mu_diff**2 + trace
     return fid.item()
 
+
 # input the feature vector, feature label, genrated feature vector, generated feature label, and the number of the class.
 def cal_FID_per_class(feature_vec, feature_vec_label, gen_feature, gen_feature_label, class_img_counts):
     fid_values = {}
@@ -66,6 +70,7 @@ def calculate_mean_and_cov(vector):
     mu = np.mean(vector, axis=0)
     cov = (vector - mu).T @ (vector - mu) / (vector.shape[0] - 1)
     return mu, cov
+
 
 def calculate_frechet_distance(mu1, sigma1, mu2, sigma2, eps=1e-6):
     """Numpy implementation of the Frechet Distance.
@@ -122,6 +127,7 @@ def calculate_frechet_distance(mu1, sigma1, mu2, sigma2, eps=1e-6):
 
     return (diff.dot(diff) + np.trace(sigma1)
             + np.trace(sigma2) - 2 * tr_covmean)
+
 
 def cal_cosine_similarity(feature_vec, feature_vec_label, gen_feature, gen_feature_label, class_img_counts):
     cosine = {}
