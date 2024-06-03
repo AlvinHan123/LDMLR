@@ -32,14 +32,12 @@ def consistency_check(cfg, crt_cfg):
         crt_cfg.update(['backbone'], cfg.model)
         crt_cfg.update(['model', 'ensemble_info'], cfg.model['ensemble_info'])
 
-
     #if cfg.dataset != crt_cfg.dataset:
     #    print('Found config[\'dataset\'] != crt_config[\'dataset\'], will go with config[\'model\']')
     #    crt_cfg.update(['dataset'], cfg.dataset)
     #    print(crt_cfg.dataset, cfg.dataset)
 
     print('consistency check finished.')
-
 
 
 def cfg_check(cfg):
