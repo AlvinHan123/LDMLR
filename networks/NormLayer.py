@@ -6,7 +6,6 @@ import torch.nn.functional as F
 
 # Normlayer used in LDAM-DRW https://github.com/kaidic/LDAM-DRW
 class NormedLinear(nn.Module):
-
     def __init__(self, in_features, out_features):
         super().__init__()
         self.weight = Parameter(torch.Tensor(in_features, out_features))
