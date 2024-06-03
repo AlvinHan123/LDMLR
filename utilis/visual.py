@@ -1,19 +1,22 @@
-import numpy
+import os
+import random
+
 import numpy as np
+import torch
+from torch.autograd import Variable
 
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
-from model.ddpm_conditional import UNet_conditional, ConditionalDiffusion1D
-from model.CGAN import Generator
-import torch
 from code.sample import generate_conditional_feature
 from copy import deepcopy
-import random
+
+from model.ddpm_conditional import UNet_conditional, ConditionalDiffusion1D
+from model.CGAN import Generator
+
 from utilis.metric import unload_feature_vectors
 from utilis.diffusion_model import Diffusion, sample
-from torch.autograd import Variable
-import os
+
 
 # sample function of conditional_diffusion
 @torch.no_grad()
@@ -23,9 +26,9 @@ def conditional_sample(model, classes):
     # If we are on the last timestep, output the denoised image
     return pred_img
 
+
 # sample function of conditional_diffusion
 def generate_feature(diffusion_model_ema, device):
-
     class_num = []
     for _ in range(10):
         class_num.append(50)
@@ -39,12 +42,11 @@ def generate_feature(diffusion_model_ema, device):
 
     return samples, fake_classes
 
+
 # draw sample from training set
 def sample_from_trainingset(features, labels):
     import numpy as np
-
     # Assuming you have your features and class labels in 'features' and 'labels' arrays
-
     # Define the number of samples to pick from each class
     num_samples_per_class = 50
 
@@ -73,6 +75,7 @@ def sample_from_trainingset(features, labels):
 
     return selected_features, selected_labels
 
+
 # sample from GAN
 def sample_from_GAN():
     n_classes = 10
@@ -89,6 +92,7 @@ def sample_from_GAN():
     gen_labels = gen_labels.to('cpu').numpy()
     fake = fake.to('cpu').numpy()
     return gen_labels, fake
+
 
 # sample function of Diffusion without Resblock
 def generate_feature_ratio(diffusion_model_ema, eta, seed, device):
@@ -108,6 +112,7 @@ def generate_feature_ratio(diffusion_model_ema, eta, seed, device):
 
     return samples, fake_classes
 
+
 # sample function of Diffusion without Resblock
 def sample_from_diffusion_wo():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -122,14 +127,16 @@ def sample_from_diffusion_wo():
     features, labels = features.to('cpu').numpy(), labels.to('cpu').numpy()
     return features,labels
 
+
 # preprocesing the training set and save the features and the labels.
 def preprocessing(feature_loader):
     feature_vec, feature_vec_label = unload_feature_vectors(feature_loader)
     feature_vec, feature_vec_label = feature_vec.to('cpu').numpy(), feature_vec_label.to('cpu').numpy()
     tr_feature, tr_label = sample_from_trainingset(feature_vec, feature_vec_label)
-    numpy.save('./saves/data/tr_feature.npy', tr_feature)
-    numpy.save('./saves/data/tr_label.npy', tr_label)
+    np.save('./saves/data/tr_feature.npy', tr_feature)
+    np.save('./saves/data/tr_label.npy', tr_label)
     return tr_feature, tr_label
+
 
 # sample from conditional diffusion
 def sample_from_diffusion():
@@ -162,8 +169,8 @@ def sample_from_diffusion():
     classes = classes.to('cpu').numpy()
     return features, classes
 
-def visualise():
 
+def visualise():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # got 50 feature samples from each class
