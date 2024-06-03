@@ -99,9 +99,9 @@ The encoder is ResNet-10. The classification accuracies in percentages are provi
 | CE                     | 57.7             | 26.6               | 4.4             | 35.8            |
 | Label shift            | 52.0             | 39.3               | 20.3            | 41.7            |
 | WCDAS                  | 57.1             | 40.9               | 23.3            | 44.6            |
-| CE+LDMLR               | 57.2             | 29.2               | 7.3             | 37.2 ↑1.4       |
-| Label shift+LDMLR      | 50.9             | 39.4               | 23.7            | 42.2 ↑0.5       |
-| **WCDAS+LDMLR**        | **57.0**         | **41.2**           | **23.4**        | **44.8 ↑0.2**   |
+| CE+LDMLR               | 57.2             | 29.2               | 7.3             | 37.2 (↑1.4)     |
+| Label shift+LDMLR      | 50.9             | 39.4               | 23.7            | 42.2 (↑0.5)     |
+| **WCDAS+LDMLR**        | **57.0**         | **41.2**           | **23.4**        | **44.8 (↑0.2)** |
 
 Code references: \
 [WCDAS](https://github.com/boranhan/wcdas_code), [LT-baseline](https://github.com/ChangkunYe/MAPLS/), [denoising-diffusion-pytorch](https://github.com/lucidrains/denoising-diffusion-pytorch/tree/main/denoising_diffusion_pytorch).
