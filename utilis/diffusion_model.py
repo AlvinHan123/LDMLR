@@ -46,6 +46,7 @@ def label_to_noise(labels, class_num, variance=0.001):
     class_noise = torch.cat(class_noise, dim=0)
     return class_noise
 
+
 # exponential moving average to smooth the loss
 @torch.no_grad()
 def ema_update(model, averaged_model, decay):
