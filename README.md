@@ -94,7 +94,7 @@ python ./WCDAS_code/main_finetune.py --dataset cifar10lt --model-file ./WCDAS_co
 **CIFAR-LT.**
 The encoder is ResNet-32. Classification accuracies in percentages are provided. "↑" indicates improvements over the baseline. The best numbers are in **bold**. The results of CE, Label Shift, and WCDAS are obtained by self-implemented networks.
 
-| Method | CIFAR-10-LT IF=10 | CIFAR-10-LT IF=100 | CIFAR-100-LT IF=10 | CIFAR-100-LT IF=100 |
+| Method | CIFAR-10-LT (IF=10) | CIFAR-10-LT (IF=100) | CIFAR-100-LT (IF=10) | CIFAR-100-LT (IF=100) |
 |--------|-------------------|--------------------|--------------------|---------------------|
 | CE     | 88.22             | 72.46              | 58.70              | 41.28               |
 | Label shift | 89.46        | 80.88              | 61.81              | 48.58               |
@@ -106,7 +106,7 @@ The encoder is ResNet-32. Classification accuracies in percentages are provided.
 **ImageNet-LT.**
 The encoder is ResNet-10. The classification accuracies in percentages are provided. "↑" indicates the improvements over the baseline. The best numbers are in **bold**.
 
-| Method                 | ImageNet-LT Many | ImageNet-LT Medium | ImageNet-LT Few | ImageNet-LT All |
+| Method                 | Many | Medium | Few | All |
 |------------------------|------------------|--------------------|-----------------|-----------------|
 | CE                     | 57.7             | 26.6               | 4.4             | 35.8            |
 | Label shift            | 52.0             | 39.3               | 20.3            | 41.7            |
