@@ -2,6 +2,7 @@ import logging
 from model.metrics import *
 from model.label_shift_est import LSC
 
+
 def metrics_cal(probs, labels, train_cls_num_list, ensemble_num=None):
     cls_num = len(train_cls_num_list)
     probs = np.array(probs)
