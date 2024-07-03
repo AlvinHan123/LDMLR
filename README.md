@@ -7,10 +7,11 @@ The Pytorch implementation for the following paper (accpeted by L3D-IVU CVPR2024
 ## Paper and Citation  
 If you find our paper/code is useful, please cite:
 ```
-@article{han2024latent,
+@inproceedings{han2024latent,
   title={Latent-based Diffusion Model for Long-tailed Recognition},
   author={Han, Pengxiao and Ye, Changkun and Zhou, Jieming and Zhang, Jing and Hong, Jie and Li, Xuesong},
-  journal={arXiv preprint arXiv:2404.04517},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={2639--2648},
   year={2024}
 }
 ```
