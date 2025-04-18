@@ -118,3 +118,4 @@ The encoder is ResNet-10. The classification accuracies in percentages are provi
 
 Code references: \
 [WCDAS](https://github.com/boranhan/wcdas_code), [LT-baseline](https://github.com/ChangkunYe/MAPLS/), [denoising-diffusion-pytorch](https://github.com/lucidrains/denoising-diffusion-pytorch/tree/main/denoising_diffusion_pytorch).
+Thank you to Bingxuan and Jiwen for contributing part of the code.
